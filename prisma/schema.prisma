@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id        Int      @id @default(autoincrement())
+  code      String   @db.VarChar(20)
+  name      String   @db.VarChar(100)
+  handle    String   @db.VarChar(100)
+  role      String   @db.VarChar(100)
+  category  String   @db.VarChar(20) // founder | gamer | lore
+  fav       String   @db.VarChar(255)
+  quote     String   @db.Text
+  avatar    String   @db.Text
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("members")
+}
+
+model Gallery {
+  id          Int      @id @default(autoincrement())
+  code        String   @db.VarChar(20)
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  date        String   @db.VarChar(50)
+  spanSize    String   @default("normal") @map("span_size") @db.VarChar(20)
+  img         String   @db.Text
+  order       Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("gallery")
+}
+
+model Story {
+  id        Int      @id @default(autoincrement())
+  code      String   @db.VarChar(20)
+  title     String   @db.VarChar(255)
+  author    String   @db.VarChar(100)
+  tag       String   @db.VarChar(100)
+  date      String   @db.VarChar(50)
+  content   String   @db.LongText
+  img       String?  @db.Text
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("stories")
+}
+
+model Setting {
+  id    Int    @id @default(autoincrement())
+  key   String @unique @db.VarChar(100)
+  value String @db.Text
+
+  @@map("settings")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique @db.VarChar(50)
+  password  String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("admins")
+}

@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #F6F5F2;
+    color: #121212;
+    overflow-x: hidden;
+  }
+  .dark body {
+    background-color: #0E0E0E;
+    color: #F6F5F2;
+  }
+}
+
+/* Subtle editorial grid lines */
+.border-grid {
+  border-color: rgba(18, 18, 18, 0.12);
+}
+.dark .border-grid {
+  border-color: rgba(246, 245, 242, 0.12);
+}
+
+/* Custom selection */
+::selection {
+  background-color: #E63946;
+  color: #F6F5F2;
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Image hover treatment */
+.archive-img {
+  filter: grayscale(100%) contrast(105%);
+  transition: filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, filter;
+}
+
+.group:hover .archive-img {
+  filter: grayscale(0%) contrast(100%);
+}
+
+/* Modal performance optimizations */
+body.modal-open {
+  overflow: hidden !important;
+}
+
+body.modal-open .animate-marquee {
+  animation-play-state: paused !important;
+}
+
+.drawer-panel {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.modal-backdrop {
+  background-color: rgba(18, 18, 18, 0.78);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  transform: translateZ(0);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F6F5F2;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #0E0E0E;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1cfc9;
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E63946;
+}

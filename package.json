@@ -1,0 +1,38 @@
+{
+  "name": "wibu-kayank",
+  "version": "1.0.0",
+  "description": "Web Profile Wibu Kayank (WK) — Collective Archive",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch server/index.ts",
+    "client": "cd client && npm run dev",
+    "build:server": "tsc",
+    "build:client": "cd client && npm run build",
+    "build": "npm run build:client && npm run build:server",
+    "start": "node dist/index.js",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx server/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.8.2",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.2",
+    "sharp": "^0.34.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.15.18",
+    "prisma": "^6.8.2",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
