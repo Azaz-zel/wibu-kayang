@@ -1,47 +1,73 @@
 import React from 'react';
 import { SettingsMap } from '../types';
+import { ChannelChipsSkeleton, InlineError } from './DataState';
+import { DEFAULT_SETTINGS } from '../defaultData';
 
 interface SocialChannelsProps {
   settings: SettingsMap;
+  isLoading: boolean;
+  hasError: boolean;
+  onRetry: () => void;
 }
 
-export const SocialChannels: React.FC<SocialChannelsProps> = ({ settings }) => {
-  const channels = [
-    { key: 'discord_url', prefix: 'DISCORD' },
-    { key: 'instagram_url', prefix: 'IG' },
-    { key: 'twitter_url', prefix: 'X.COM' },
-    { key: 'youtube_url', prefix: 'YT' },
-    { key: 'tiktok_url', prefix: 'TIKTOK' },
-  ];
+const channels = [
+  { key: 'discord_url', label: 'Discord Server', desc: 'Sesi voice harian & nobar' },
+  { key: 'instagram_url', label: 'Instagram', desc: 'Dokumentasi & cuplikan' },
+  { key: 'twitter_url', label: 'X (Twitter)', desc: 'Celoteh & live tweet' },
+  { key: 'youtube_url', label: 'YouTube', desc: 'VOD & highlight nobar' },
+  { key: 'tiktok_url', label: 'TikTok', desc: 'Klip pendek santai' },
+];
 
-  const activeChannels = channels.filter(ch => settings[ch.key] && settings[ch.key].trim() !== '');
+export const SocialChannels: React.FC<SocialChannelsProps> = ({
+  settings,
+  isLoading,
+  hasError,
+  onRetry,
+}) => {
+  // Use settings or fallback to default settings so channels are never empty
+  const effectiveSettings = Object.keys(settings).length > 0 ? settings : DEFAULT_SETTINGS;
+
+  const activeChannels = channels.filter(
+    (channel) => effectiveSettings[channel.key] && effectiveSettings[channel.key].trim() !== ''
+  );
 
   return (
-    <section id="socials" className="border-b border-grid bg-stone/20 dark:bg-neutral-900/30">
-      <div className="px-6 sm:px-12 lg:px-16 py-6 sm:py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+    <section
+      id="socials"
+      className="border-b border-grid bg-stone/20 dark:bg-neutral-900/30"
+      aria-busy={isLoading}
+    >
+      <div className="page-gutter flex flex-col items-start justify-between gap-6 py-8 sm:flex-row sm:items-center sm:py-10">
         <div>
-          <span className="font-mono text-xs text-vermilion uppercase tracking-widest block mb-1">
-            // TRANSMISSION // CHANNELS
-          </span>
-          <h3 className="font-display text-xl font-bold uppercase tracking-tight">
-            Kanal & Jaringan WK
-          </h3>
+          <h2 className="font-display text-xl font-bold uppercase tracking-tight sm:text-2xl">
+            Kanal Komunitas WK<span className="text-vermilion">.</span>
+          </h2>
+          <p className="mt-1 font-mono text-xs text-neutral-500 dark:text-neutral-400">
+            Terhubung ke server Discord utama dan media sosial lingkaran kami.
+          </p>
         </div>
+
         <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
-          {activeChannels.length === 0 ? (
-            <span className="text-neutral-400 italic">
-              Kanal belum dikonfigurasi. Atur di panel admin.
+          {isLoading ? (
+            <ChannelChipsSkeleton count={3} />
+          ) : hasError ? (
+            <InlineError onRetry={onRetry} />
+          ) : activeChannels.length === 0 ? (
+            <span className="italic text-neutral-500 dark:text-neutral-400">
+              Kanal sosial belum tersedia.
             </span>
           ) : (
-            activeChannels.map(ch => (
+            activeChannels.map((channel) => (
               <a
-                key={ch.key}
-                href={settings[ch.key]}
+                key={channel.key}
+                href={effectiveSettings[channel.key]}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1.5 rounded border border-grid hover:border-ink dark:hover:border-paper hover:text-vermilion transition-colors"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded border border-grid bg-paper px-4 py-2.5 transition-colors hover:border-ink hover:text-vermilion dark:bg-[#0E0E0E] dark:hover:border-paper dark:hover:text-vermilion"
               >
-                [{ch.prefix}] ↗
+                <span className="font-medium">{channel.label}</span>
+                <span aria-hidden="true" className="text-vermilion">↗</span>
+                <span className="sr-only">(buka di tab baru)</span>
               </a>
             ))
           )}

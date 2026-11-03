@@ -15,7 +15,7 @@ export default {
       colors: {
         paper: '#F6F5F2',
         ink: '#121212',
-        vermilion: '#E63946',
+        vermilion: '#C42F3A',
         stone: '#E2E0DC'
       }
     },
